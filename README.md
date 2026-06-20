@@ -4,7 +4,7 @@ StudyMate AI is an AI-powered study assistant that transforms lengthy study note
 
 ## 🚀 Live Demo
 
-**Live URL:** *Coming Soon*
+**Live URL:** https://studymate-ai-pied.vercel.app/
 
 ## 📂 GitHub Repository
 
