@@ -74,17 +74,19 @@ Simple and responsive UI built using Next.js and Tailwind CSS.
 
 ## 🏗️ Project Architecture
 
+```text
 User Notes
-↓
+    ↓
 Next.js Frontend
-↓
+    ↓
 API Route (/api/generate)
-↓
+    ↓
 Google Gemini API
-↓
+    ↓
 Structured JSON Response
-↓
+    ↓
 Summary + Flashcards + Quiz Generation
+```
 
 ---
 
@@ -92,11 +94,16 @@ Summary + Flashcards + Quiz Generation
 
 ### Home Page
 
-*Add screenshot here*
+<img width="1883" height="887" alt="Screenshot (1223)" src="https://github.com/user-attachments/assets/f371e957-758e-4f00-9084-9769be6641cc" />
+
 
 ### Generated Study Materials
 
-*Add screenshot here*
+<img width="1720" height="756" alt="Screenshot (1224)" src="https://github.com/user-attachments/assets/25beb81e-c42d-4a63-9d21-23c4862c0b98" />
+<img width="1379" height="608" alt="Screenshot (1219)" src="https://github.com/user-attachments/assets/8e8b6112-43d5-41ed-9a5c-ce7d1a13aa4e" />
+<img width="1368" height="884" alt="Screenshot (1220)" src="https://github.com/user-attachments/assets/f54fcb63-ee12-47fd-ac7b-c4ca2fd356b0" />
+
+
 
 ---
 
