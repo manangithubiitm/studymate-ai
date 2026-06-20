@@ -2,45 +2,119 @@
 import { useState } from "react";
 export default function Home() {
   const [notes, setNotes] = useState("");
+  const [results, setResults] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleGenerate = async () => {
+    if (!notes.trim()) return;
+
+    try {
+      setLoading(true);
+
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          notes,
+        }),
+      });
+      const data = await response.json();
+      console.log("API Response:", data);
+      if (!response.ok) {
+        alert(data.error);
+        return;
+      }
+      setResults(data);
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <main className="min-h-screen px-6 py-12">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <h1 className="text-5xl font-bold text-center">
           StudyMate AI
         </h1>
-        <p className="mt-4 text-lg text-gray-600">
+        <p className="mt-4 text-lg text-gray-600 text-center">
           Turn study notes into summaries,
           flashcards, and quizzes instantly
         </p>
-        <textarea className="w-full mt-8 border rounded-lg p-4 h-64" placeholder="Paste your study notes here..." value={notes}
-        onChange={(e) => setNotes(e.target.value)}/>
-        <button className="mt-4 bg-black text-white px-6 py-3 rounded-lg">
-          Generate Study Materials
-        </button>
-        {/* Results section */}
-        <div className="mt-10 space-y-6">
-          <div className="border rounded-lg p-4">
-            <h2 className="font-bold text-xl">
-              Summary
-            </h2>
-          </div>
-          <div className="border rounded-lg p-4">
-            <h2 className="font-bold text-xl">
-              Key Points
-            </h2>
-          </div>
-          <div className="border rounded-lg p-4">
-            <h2 className="font-bold text-xl">
-              Flashcards
-            </h2>
-          </div>
-          <div className="border rounded-lg p-4">
-            <h2 className="font-bold text-xl">
-              Quiz Questions
-            </h2>
+        <div className="bg-white rounded-2xl shadow-md p-6 mt-8">
+          <textarea className="w-full mt-8 border border-gray-300 rounded-xl p-5 h-64 shadow-sm
+            focus:outline-none
+            focus:ring-2
+            focus:ring-blue-500
+            focus:border-transparent" 
+            placeholder="Paste your study notes here..." 
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
+          <div className="flex justify-center">
+            <button 
+              onClick={handleGenerate}
+              className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition cursor-pointer"
+            >
+              {loading ? "Generating..." : "Generate Study Materials"}
+            </button>
           </div>
         </div>
+        
+        
+        {/* Results section */}
+        {results && !results.error && (
+          <div className="mt-10 space-y-6">
+            <div className="bg-white shadow-md rounded-2xl p-6">
+              <h2 className="font-bold text-xl">
+                📄 Summary
+              </h2>
+              <p className="mt-3">
+                {results.summary}
+              </p>
+            </div>
+            <div className="bg-white shadow-md rounded-2xl p-6">
+              <h2 className="font-bold text-xl">
+                🎯 Key Points
+              </h2>
+
+              <ul className="list-disc ml-5 mt-3">
+                {results.keyPoints?.map((point, index) => (
+                  <li key={index}>{point}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-white shadow-md rounded-2xl p-6">
+              <h2 className="font-bold text-xl">
+                🃏 Flashcards
+              </h2>
+              {results.flashcards?.map((card, index) => (
+                <div key={index} className="mt-4">
+                  <p>
+                    <strong>Q:</strong> {card.question}
+                  </p>
+                  
+                  <p>
+                    <strong>A:</strong> {card.answer}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="bg-white shadow-md rounded-2xl p-6">
+              <h2 className="font-bold text-xl">
+                ❓ Quiz Questions
+              </h2>
+              <ol className="list-decimal ml-5 mt-3">
+                {results.quizQuestions?.map((question, index) => (
+                  <li key={index}>{question}</li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        )}
       </div>
     </main>
 
