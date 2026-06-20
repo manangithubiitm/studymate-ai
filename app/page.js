@@ -4,9 +4,13 @@ export default function Home() {
   const [notes, setNotes] = useState("");
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleGenerate = async () => {
     if (!notes.trim()) return;
+
+    setError("");
+    setResults(null);
 
     try {
       setLoading(true);
@@ -23,12 +27,13 @@ export default function Home() {
       const data = await response.json();
       console.log("API Response:", data);
       if (!response.ok) {
-        alert(data.error);
+        setError("Unable to generate study materials. Please try again.");
         return;
       }
       setResults(data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -64,6 +69,11 @@ export default function Home() {
           </div>
         </div>
         
+        {error && (
+          <div className="mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl">
+            {error}
+          </div>
+        )}
         
         {/* Results section */}
         {results && !results.error && (
