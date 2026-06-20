@@ -59,10 +59,20 @@ export default function Home() {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />
+          <p className="text-sm text-gray-500 mt-2 text-right">
+            {notes.length} characters
+          </p>
           <div className="flex justify-center">
             <button 
               onClick={handleGenerate}
-              className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition cursor-pointer"
+              disabled={loading}
+              className={`mt-6 text-white px-8 py-3 rounded-xl font-semibold transition
+                ${
+                  loading
+                    ? "bg-gray-400 cursor-not-allowed opacity-70"
+                    : "bg-blue-600 hover:bg-blue-700 cursor-pointer"
+                }
+              `}
             >
               {loading ? "Generating..." : "Generate Study Materials"}
             </button>
@@ -126,7 +136,9 @@ export default function Home() {
           </div>
         )}
       </div>
+      <footer className="text-center text-gray-500 mt-12 font-bold">
+        Built with Next.js and Gemini AI
+      </footer>
     </main>
-
   );
 }
